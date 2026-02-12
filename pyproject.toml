@@ -132,7 +132,17 @@ agent-sdk = [
 # NOTE: attune-software is bundled in this repo at attune_software/
 software = []
 
-# Backend API server (optional)
+# Agent Coordination Dashboard (optional, falls back to stdlib server)
+dashboard = [
+    "fastapi>=0.109.1,<1.0.0",  # CVE fix: PYSEC-2024-38
+    "uvicorn>=0.20.0,<1.0.0",
+    "starlette>=0.40.0,<1.0.0",  # CVE fix: GHSA-f96h, GHSA-2c2j
+]
+
+# Socratic meta-workflows (no extra deps - uses core anthropic SDK)
+socratic = []
+
+# Backend API server (optional) - dashboard + authentication
 backend = [
     "fastapi>=0.109.1,<1.0.0",  # CVE fix: PYSEC-2024-38
     "uvicorn>=0.20.0,<1.0.0",

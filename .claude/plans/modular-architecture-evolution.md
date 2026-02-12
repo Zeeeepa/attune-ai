@@ -10,8 +10,8 @@
 | **--** | Testing | Remove 70 auto-generated behavioral test files (dead weight) | **COMPLETE** | 2 |
 | **2A** | Workflows | Extract 7 services from mixins into services/ | **COMPLETE** | 2 |
 | **3A** | Plugins | Plugin system improvements | Pending | |
-| **3B** | Extraction | Dashboard + Socratic as optional extras | Pending | |
-| **3C** | Extraction | Lazy loading improvements | Pending | |
+| **3B** | Extraction | Dashboard + Socratic as optional extras | **COMPLETE** | 3 |
+| **3C** | Extraction | Lazy loading improvements | **COMPLETE** | 3 |
 | **2B-2C** | Workflows | WorkflowContext + BaseWorkflow update | Pending | |
 | **1C** | Consolidation | Move LLM core + agent_factory (highest risk) | Pending | |
 | **2D** | Workflows | Migrate concrete workflows | Pending | |
