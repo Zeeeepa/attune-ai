@@ -1,1276 +1,6 @@
 {
   "patterns": [
     {
-      "pattern_id": "workflow_20260212_b4416d76",
-      "bug_type": "workflow_run",
-      "status": "resolved",
-      "root_cause": "Workflow: stub-workflow - Stub for state persistence tests",
-      "fix": "Completed via stub-workflow workflow",
-      "resolved_by": "@empathy_framework",
-      "resolved_at": "2026-02-12",
-      "files_affected": [],
-      "source": "workflow_tracking",
-      "tier_progression": {
-        "methodology": "AI-ADDIE",
-        "recommended_tier": "CHEAP",
-        "starting_tier": "CAPABLE",
-        "successful_tier": "CAPABLE",
-        "total_attempts": 2,
-        "tier_history": [
-          {
-            "tier": "CHEAP",
-            "attempts": 1,
-            "success": {
-              "attempt": 1,
-              "quality_gates_passed": [
-                "execution",
-                "output"
-              ]
-            }
-          },
-          {
-            "tier": "CAPABLE",
-            "attempts": 1,
-            "success": {
-              "attempt": 1,
-              "quality_gates_passed": [
-                "execution",
-                "output"
-              ]
-            }
-          }
-        ],
-        "cost_breakdown": {
-          "total_cost": 0.001,
-          "cost_if_always_premium": 0.007,
-          "savings_percent": 80.0
-        },
-        "quality_metrics": {
-          "tests_passed": true,
-          "health_score_before": 73,
-          "health_score_after": 73
-        },
-        "xml_protocol_compliance": {
-          "prompt_used_xml": true,
-          "response_used_xml": true,
-          "all_sections_present": true,
-          "test_evidence_provided": true,
-          "false_complete_avoided": true
-        }
-      },
-      "workflow_metadata": {
-        "workflow_name": "stub-workflow",
-        "workflow_id": "b4416d76-7587-4edf-ae6b-73607ce79963",
-        "duration_seconds": 0.01,
-        "started_at": "2026-02-12T06:58:25.259931",
-        "completed_at": "2026-02-12T06:58:25.272684"
-      }
-    },
-    {
-      "pattern_id": "workflow_20260212_5e71f107",
-      "bug_type": "workflow_run",
-      "status": "resolved",
-      "root_cause": "Workflow: stub-workflow - Stub for state persistence tests",
-      "fix": "Completed via stub-workflow workflow",
-      "resolved_by": "@empathy_framework",
-      "resolved_at": "2026-02-12",
-      "files_affected": [],
-      "source": "workflow_tracking",
-      "tier_progression": {
-        "methodology": "AI-ADDIE",
-        "recommended_tier": "CHEAP",
-        "starting_tier": "CAPABLE",
-        "successful_tier": "CAPABLE",
-        "total_attempts": 2,
-        "tier_history": [
-          {
-            "tier": "CHEAP",
-            "attempts": 1,
-            "success": {
-              "attempt": 1,
-              "quality_gates_passed": [
-                "execution",
-                "output"
-              ]
-            }
-          },
-          {
-            "tier": "CAPABLE",
-            "attempts": 1,
-            "success": {
-              "attempt": 1,
-              "quality_gates_passed": [
-                "execution",
-                "output"
-              ]
-            }
-          }
-        ],
-        "cost_breakdown": {
-          "total_cost": 0.001,
-          "cost_if_always_premium": 0.007,
-          "savings_percent": 80.0
-        },
-        "quality_metrics": {
-          "tests_passed": true,
-          "health_score_before": 73,
-          "health_score_after": 73
-        },
-        "xml_protocol_compliance": {
-          "prompt_used_xml": true,
-          "response_used_xml": true,
-          "all_sections_present": true,
-          "test_evidence_provided": true,
-          "false_complete_avoided": true
-        }
-      },
-      "workflow_metadata": {
-        "workflow_name": "stub-workflow",
-        "workflow_id": "5e71f107-40c4-47eb-8f94-df7be90cbd36",
-        "duration_seconds": 0.01,
-        "started_at": "2026-02-12T06:58:25.293914",
-        "completed_at": "2026-02-12T06:58:25.307148"
-      }
-    },
-    {
-      "pattern_id": "workflow_20260212_0ebee280",
-      "bug_type": "workflow_run",
-      "status": "resolved",
-      "root_cause": "Workflow: stub-workflow - Stub for state persistence tests",
-      "fix": "Completed via stub-workflow workflow",
-      "resolved_by": "@empathy_framework",
-      "resolved_at": "2026-02-12",
-      "files_affected": [],
-      "source": "workflow_tracking",
-      "tier_progression": {
-        "methodology": "AI-ADDIE",
-        "recommended_tier": "CHEAP",
-        "starting_tier": "CAPABLE",
-        "successful_tier": "CAPABLE",
-        "total_attempts": 2,
-        "tier_history": [
-          {
-            "tier": "CHEAP",
-            "attempts": 1,
-            "success": {
-              "attempt": 1,
-              "quality_gates_passed": [
-                "execution",
-                "output"
-              ]
-            }
-          },
-          {
-            "tier": "CAPABLE",
-            "attempts": 1,
-            "success": {
-              "attempt": 1,
-              "quality_gates_passed": [
-                "execution",
-                "output"
-              ]
-            }
-          }
-        ],
-        "cost_breakdown": {
-          "total_cost": 0.001,
-          "cost_if_always_premium": 0.007,
-          "savings_percent": 80.0
-        },
-        "quality_metrics": {
-          "tests_passed": true,
-          "health_score_before": 73,
-          "health_score_after": 73
-        },
-        "xml_protocol_compliance": {
-          "prompt_used_xml": true,
-          "response_used_xml": true,
-          "all_sections_present": true,
-          "test_evidence_provided": true,
-          "false_complete_avoided": true
-        }
-      },
-      "workflow_metadata": {
-        "workflow_name": "stub-workflow",
-        "workflow_id": "0ebee280-2234-47c2-9766-4e1e697c639c",
-        "duration_seconds": 0.01,
-        "started_at": "2026-02-12T06:58:25.339508",
-        "completed_at": "2026-02-12T06:58:25.352605"
-      }
-    },
-    {
-      "pattern_id": "workflow_20260212_a3c4b488",
-      "bug_type": "workflow_run",
-      "status": "resolved",
-      "root_cause": "Workflow: test-tier-fallback - Test workflow for tier fallback",
-      "fix": "Completed via test-tier-fallback workflow",
-      "resolved_by": "@empathy_framework",
-      "resolved_at": "2026-02-12",
-      "files_affected": [],
-      "source": "workflow_tracking",
-      "tier_progression": {
-        "methodology": "AI-ADDIE",
-        "recommended_tier": "CHEAP",
-        "starting_tier": "CHEAP",
-        "successful_tier": "CHEAP",
-        "total_attempts": 2,
-        "tier_history": [
-          {
-            "stage": "stage1",
-            "total_attempts": 1,
-            "attempts": [
-              {
-                "attempt": 1,
-                "tier": "CHEAP",
-                "success": true
-              }
-            ],
-            "successful_tier": "CHEAP"
-          },
-          {
-            "stage": "stage2",
-            "total_attempts": 1,
-            "attempts": [
-              {
-                "attempt": 1,
-                "tier": "CHEAP",
-                "success": true
-              }
-            ],
-            "successful_tier": "CHEAP"
-          }
-        ],
-        "cost_breakdown": {
-          "total_cost": 0.007,
-          "cost_if_always_premium": 0.035,
-          "savings_percent": 80.0
-        },
-        "quality_metrics": {
-          "tests_passed": true,
-          "health_score_before": 73,
-          "health_score_after": 73
-        },
-        "xml_protocol_compliance": {
-          "prompt_used_xml": true,
-          "response_used_xml": true,
-          "all_sections_present": true,
-          "test_evidence_provided": true,
-          "false_complete_avoided": true
-        }
-      },
-      "workflow_metadata": {
-        "workflow_name": "test-tier-fallback",
-        "workflow_id": "a3c4b488-adac-4ac7-a29f-26f91e8f178d",
-        "duration_seconds": 0.01,
-        "started_at": "2026-02-12T06:58:26.466703",
-        "completed_at": "2026-02-12T06:58:26.480472"
-      }
-    },
-    {
-      "pattern_id": "workflow_20260212_b9986f8d",
-      "bug_type": "workflow_run",
-      "status": "resolved",
-      "root_cause": "Workflow: test-tier-fallback - Test workflow for tier fallback",
-      "fix": "Completed via test-tier-fallback workflow",
-      "resolved_by": "@empathy_framework",
-      "resolved_at": "2026-02-12",
-      "files_affected": [],
-      "source": "workflow_tracking",
-      "tier_progression": {
-        "methodology": "AI-ADDIE",
-        "recommended_tier": "CHEAP",
-        "starting_tier": "CAPABLE",
-        "successful_tier": "CAPABLE",
-        "total_attempts": 2,
-        "tier_history": [
-          {
-            "stage": "stage1",
-            "total_attempts": 2,
-            "attempts": [
-              {
-                "attempt": 1,
-                "tier": "CHEAP",
-                "success": false,
-                "quality_gate_failed": "validation_failed"
-              },
-              {
-                "attempt": 2,
-                "tier": "CAPABLE",
-                "success": true
-              }
-            ],
-            "successful_tier": "CAPABLE",
-            "tier_fallback_occurred": true,
-            "fallback_chain": "CHEAP \u2192 CAPABLE"
-          },
-          {
-            "stage": "stage2",
-            "total_attempts": 1,
-            "attempts": [
-              {
-                "attempt": 1,
-                "tier": "CHEAP",
-                "success": true
-              }
-            ],
-            "successful_tier": "CHEAP"
-          }
-        ],
-        "cost_breakdown": {
-          "total_cost": 0.014,
-          "cost_if_always_premium": 0.07,
-          "savings_percent": 80.0
-        },
-        "quality_metrics": {
-          "tests_passed": true,
-          "health_score_before": 73,
-          "health_score_after": 73
-        },
-        "xml_protocol_compliance": {
-          "prompt_used_xml": true,
-          "response_used_xml": true,
-          "all_sections_present": true,
-          "test_evidence_provided": true,
-          "false_complete_avoided": true
-        }
-      },
-      "workflow_metadata": {
-        "workflow_name": "test-tier-fallback",
-        "workflow_id": "b9986f8d-4773-4c77-9ced-38ec08b0b2b1",
-        "duration_seconds": 0.01,
-        "started_at": "2026-02-12T06:58:26.502428",
-        "completed_at": "2026-02-12T06:58:26.516578"
-      }
-    },
-    {
-      "pattern_id": "workflow_20260212_79cce1eb",
-      "bug_type": "workflow_run",
-      "status": "failed",
-      "root_cause": "Workflow: test-tier-fallback - Test workflow for tier fallback",
-      "fix": "Completed via test-tier-fallback workflow",
-      "resolved_by": "@empathy_framework",
-      "resolved_at": "2026-02-12",
-      "files_affected": [],
-      "source": "workflow_tracking",
-      "tier_progression": {
-        "methodology": "AI-ADDIE",
-        "recommended_tier": "CHEAP",
-        "starting_tier": "CHEAP",
-        "successful_tier": "CHEAP",
-        "total_attempts": 1,
-        "tier_history": [
-          {
-            "stage": "stage1",
-            "total_attempts": 3,
-            "attempts": [
-              {
-                "attempt": 1,
-                "tier": "CHEAP",
-                "success": false,
-                "quality_gate_failed": "validation_failed"
-              },
-              {
-                "attempt": 2,
-                "tier": "CAPABLE",
-                "success": false,
-                "quality_gate_failed": "validation_failed"
-              },
-              {
-                "attempt": 3,
-                "tier": "PREMIUM",
-                "success": false,
-                "quality_gate_failed": "validation_failed"
-              }
-            ]
-          }
-        ],
-        "cost_breakdown": {
-          "total_cost": 0,
-          "cost_if_always_premium": 0,
-          "savings_percent": 0
-        },
-        "quality_metrics": {
-          "tests_passed": false,
-          "health_score_before": 73,
-          "health_score_after": 73
-        },
-        "xml_protocol_compliance": {
-          "prompt_used_xml": true,
-          "response_used_xml": true,
-          "all_sections_present": true,
-          "test_evidence_provided": true,
-          "false_complete_avoided": false
-        }
-      },
-      "workflow_metadata": {
-        "workflow_name": "test-tier-fallback",
-        "workflow_id": "79cce1eb-9c9c-4e8d-b00e-239f9aafface",
-        "duration_seconds": 0.01,
-        "started_at": "2026-02-12T06:58:26.538373",
-        "completed_at": "2026-02-12T06:58:26.551733"
-      }
-    },
-    {
-      "pattern_id": "workflow_20260212_fd57c971",
-      "bug_type": "workflow_run",
-      "status": "resolved",
-      "root_cause": "Workflow: test-tier-fallback - Test workflow for tier fallback",
-      "fix": "Completed via test-tier-fallback workflow",
-      "resolved_by": "@empathy_framework",
-      "resolved_at": "2026-02-12",
-      "files_affected": [],
-      "source": "workflow_tracking",
-      "tier_progression": {
-        "methodology": "AI-ADDIE",
-        "recommended_tier": "CHEAP",
-        "starting_tier": "CAPABLE",
-        "successful_tier": "CAPABLE",
-        "total_attempts": 1,
-        "tier_history": [
-          {
-            "tier": "CAPABLE",
-            "attempts": 2,
-            "success": {
-              "attempt": 2,
-              "quality_gates_passed": [
-                "execution",
-                "output"
-              ]
-            }
-          }
-        ],
-        "cost_breakdown": {
-          "total_cost": 0.021,
-          "cost_if_always_premium": 0.105,
-          "savings_percent": 80.0
-        },
-        "quality_metrics": {
-          "tests_passed": true,
-          "health_score_before": 73,
-          "health_score_after": 73
-        },
-        "xml_protocol_compliance": {
-          "prompt_used_xml": true,
-          "response_used_xml": true,
-          "all_sections_present": true,
-          "test_evidence_provided": true,
-          "false_complete_avoided": true
-        }
-      },
-      "workflow_metadata": {
-        "workflow_name": "test-tier-fallback",
-        "workflow_id": "fd57c971-d24b-47c6-9b91-4375a82a1601",
-        "duration_seconds": 0.01,
-        "started_at": "2026-02-12T06:58:26.572306",
-        "completed_at": "2026-02-12T06:58:26.586423"
-      }
-    },
-    {
-      "pattern_id": "workflow_20260212_49ad43ff",
-      "bug_type": "workflow_run",
-      "status": "resolved",
-      "root_cause": "Workflow: test-tier-fallback - Test workflow for tier fallback",
-      "fix": "Completed via test-tier-fallback workflow",
-      "resolved_by": "@empathy_framework",
-      "resolved_at": "2026-02-12",
-      "files_affected": [],
-      "source": "workflow_tracking",
-      "tier_progression": {
-        "methodology": "AI-ADDIE",
-        "recommended_tier": "CHEAP",
-        "starting_tier": "PREMIUM",
-        "successful_tier": "PREMIUM",
-        "total_attempts": 2,
-        "tier_history": [
-          {
-            "stage": "stage1",
-            "total_attempts": 3,
-            "attempts": [
-              {
-                "attempt": 1,
-                "tier": "CHEAP",
-                "success": false,
-                "quality_gate_failed": "validation_failed"
-              },
-              {
-                "attempt": 2,
-                "tier": "CAPABLE",
-                "success": false,
-                "quality_gate_failed": "validation_failed"
-              },
-              {
-                "attempt": 3,
-                "tier": "PREMIUM",
-                "success": true
-              }
-            ],
-            "successful_tier": "PREMIUM",
-            "tier_fallback_occurred": true,
-            "fallback_chain": "CHEAP \u2192 PREMIUM"
-          },
-          {
-            "stage": "stage2",
-            "total_attempts": 1,
-            "attempts": [
-              {
-                "attempt": 1,
-                "tier": "CHEAP",
-                "success": true
-              }
-            ],
-            "successful_tier": "CHEAP"
-          }
-        ],
-        "cost_breakdown": {
-          "total_cost": 0.056,
-          "cost_if_always_premium": 0.28,
-          "savings_percent": 80.0
-        },
-        "quality_metrics": {
-          "tests_passed": true,
-          "health_score_before": 73,
-          "health_score_after": 73
-        },
-        "xml_protocol_compliance": {
-          "prompt_used_xml": true,
-          "response_used_xml": true,
-          "all_sections_present": true,
-          "test_evidence_provided": true,
-          "false_complete_avoided": true
-        }
-      },
-      "workflow_metadata": {
-        "workflow_name": "test-tier-fallback",
-        "workflow_id": "49ad43ff-3c83-411c-8fd4-417448275540",
-        "duration_seconds": 0.01,
-        "started_at": "2026-02-12T06:58:26.609721",
-        "completed_at": "2026-02-12T06:58:26.623561"
-      }
-    },
-    {
-      "pattern_id": "workflow_20260212_f6d2c426",
-      "bug_type": "workflow_run",
-      "status": "resolved",
-      "root_cause": "Workflow: test-tier-fallback - Test workflow for tier fallback",
-      "fix": "Completed via test-tier-fallback workflow",
-      "resolved_by": "@empathy_framework",
-      "resolved_at": "2026-02-12",
-      "files_affected": [],
-      "source": "workflow_tracking",
-      "tier_progression": {
-        "methodology": "AI-ADDIE",
-        "recommended_tier": "CHEAP",
-        "starting_tier": "CAPABLE",
-        "successful_tier": "CAPABLE",
-        "total_attempts": 2,
-        "tier_history": [
-          {
-            "stage": "stage1",
-            "total_attempts": 2,
-            "attempts": [
-              {
-                "attempt": 1,
-                "tier": "CHEAP",
-                "success": false,
-                "quality_gate_failed": "validation_failed"
-              },
-              {
-                "attempt": 2,
-                "tier": "CAPABLE",
-                "success": true
-              }
-            ],
-            "successful_tier": "CAPABLE",
-            "tier_fallback_occurred": true,
-            "fallback_chain": "CHEAP \u2192 CAPABLE"
-          },
-          {
-            "stage": "stage2",
-            "total_attempts": 1,
-            "attempts": [
-              {
-                "attempt": 1,
-                "tier": "CHEAP",
-                "success": true
-              }
-            ],
-            "successful_tier": "CHEAP"
-          }
-        ],
-        "cost_breakdown": {
-          "total_cost": 0.014,
-          "cost_if_always_premium": 0.07,
-          "savings_percent": 80.0
-        },
-        "quality_metrics": {
-          "tests_passed": true,
-          "health_score_before": 73,
-          "health_score_after": 73
-        },
-        "xml_protocol_compliance": {
-          "prompt_used_xml": true,
-          "response_used_xml": true,
-          "all_sections_present": true,
-          "test_evidence_provided": true,
-          "false_complete_avoided": true
-        }
-      },
-      "workflow_metadata": {
-        "workflow_name": "test-tier-fallback",
-        "workflow_id": "f6d2c426-ce46-443e-985e-bd615665cb8b",
-        "duration_seconds": 0.01,
-        "started_at": "2026-02-12T06:58:26.644270",
-        "completed_at": "2026-02-12T06:58:26.657662"
-      }
-    },
-    {
-      "pattern_id": "workflow_20260212_0750e1fd",
-      "bug_type": "workflow_run",
-      "status": "resolved",
-      "root_cause": "Workflow: test-tier-fallback - Test workflow for tier fallback",
-      "fix": "Completed via test-tier-fallback workflow",
-      "resolved_by": "@empathy_framework",
-      "resolved_at": "2026-02-12",
-      "files_affected": [],
-      "source": "workflow_tracking",
-      "tier_progression": {
-        "methodology": "AI-ADDIE",
-        "recommended_tier": "CHEAP",
-        "starting_tier": "CAPABLE",
-        "successful_tier": "CAPABLE",
-        "total_attempts": 2,
-        "tier_history": [
-          {
-            "stage": "stage1",
-            "total_attempts": 2,
-            "attempts": [
-              {
-                "attempt": 1,
-                "tier": "CHEAP",
-                "success": false,
-                "quality_gate_failed": "validation_failed"
-              },
-              {
-                "attempt": 2,
-                "tier": "CAPABLE",
-                "success": true
-              }
-            ],
-            "successful_tier": "CAPABLE",
-            "tier_fallback_occurred": true,
-            "fallback_chain": "CHEAP \u2192 CAPABLE"
-          },
-          {
-            "stage": "stage2",
-            "total_attempts": 1,
-            "attempts": [
-              {
-                "attempt": 1,
-                "tier": "CHEAP",
-                "success": true
-              }
-            ],
-            "successful_tier": "CHEAP"
-          }
-        ],
-        "cost_breakdown": {
-          "total_cost": 0.014,
-          "cost_if_always_premium": 0.07,
-          "savings_percent": 80.0
-        },
-        "quality_metrics": {
-          "tests_passed": true,
-          "health_score_before": 73,
-          "health_score_after": 73
-        },
-        "xml_protocol_compliance": {
-          "prompt_used_xml": true,
-          "response_used_xml": true,
-          "all_sections_present": true,
-          "test_evidence_provided": true,
-          "false_complete_avoided": true
-        }
-      },
-      "workflow_metadata": {
-        "workflow_name": "test-tier-fallback",
-        "workflow_id": "0750e1fd-4fb4-4621-84b5-76884bd7b476",
-        "duration_seconds": 0.01,
-        "started_at": "2026-02-12T06:58:26.678251",
-        "completed_at": "2026-02-12T06:58:26.691951"
-      }
-    },
-    {
-      "pattern_id": "workflow_20260212_6f2ecbf0",
-      "bug_type": "workflow_run",
-      "status": "resolved",
-      "root_cause": "Workflow: test-workflow - Test workflow for coordination",
-      "fix": "Completed via test-workflow workflow",
-      "resolved_by": "@empathy_framework",
-      "resolved_at": "2026-02-12",
-      "files_affected": [],
-      "source": "workflow_tracking",
-      "tier_progression": {
-        "methodology": "AI-ADDIE",
-        "recommended_tier": "CHEAP",
-        "starting_tier": "CAPABLE",
-        "successful_tier": "CAPABLE",
-        "total_attempts": 2,
-        "tier_history": [
-          {
-            "tier": "CHEAP",
-            "attempts": 1,
-            "success": {
-              "attempt": 1,
-              "quality_gates_passed": [
-                "execution",
-                "output"
-              ]
-            }
-          },
-          {
-            "tier": "CAPABLE",
-            "attempts": 1,
-            "success": {
-              "attempt": 1,
-              "quality_gates_passed": [
-                "execution",
-                "output"
-              ]
-            }
-          }
-        ],
-        "cost_breakdown": {
-          "total_cost": 0.0,
-          "cost_if_always_premium": 0.001,
-          "savings_percent": 80.0
-        },
-        "quality_metrics": {
-          "tests_passed": true,
-          "health_score_before": 73,
-          "health_score_after": 73
-        },
-        "xml_protocol_compliance": {
-          "prompt_used_xml": true,
-          "response_used_xml": true,
-          "all_sections_present": true,
-          "test_evidence_provided": true,
-          "false_complete_avoided": true
-        }
-      },
-      "workflow_metadata": {
-        "workflow_name": "test-workflow",
-        "workflow_id": "6f2ecbf0-6be7-4147-9775-3050878a8ff5",
-        "duration_seconds": 0.01,
-        "started_at": "2026-02-12T06:58:26.753139",
-        "completed_at": "2026-02-12T06:58:26.766948"
-      }
-    },
-    {
-      "pattern_id": "workflow_20260212_e7adbcb0",
-      "bug_type": "workflow_run",
-      "status": "resolved",
-      "root_cause": "Workflow: test-workflow - Test workflow for coordination",
-      "fix": "Completed via test-workflow workflow",
-      "resolved_by": "@empathy_framework",
-      "resolved_at": "2026-02-12",
-      "files_affected": [],
-      "source": "workflow_tracking",
-      "tier_progression": {
-        "methodology": "AI-ADDIE",
-        "recommended_tier": "CHEAP",
-        "starting_tier": "CAPABLE",
-        "successful_tier": "CAPABLE",
-        "total_attempts": 2,
-        "tier_history": [
-          {
-            "tier": "CHEAP",
-            "attempts": 1,
-            "success": {
-              "attempt": 1,
-              "quality_gates_passed": [
-                "execution",
-                "output"
-              ]
-            }
-          },
-          {
-            "tier": "CAPABLE",
-            "attempts": 1,
-            "success": {
-              "attempt": 1,
-              "quality_gates_passed": [
-                "execution",
-                "output"
-              ]
-            }
-          }
-        ],
-        "cost_breakdown": {
-          "total_cost": 0.0,
-          "cost_if_always_premium": 0.001,
-          "savings_percent": 80.0
-        },
-        "quality_metrics": {
-          "tests_passed": true,
-          "health_score_before": 73,
-          "health_score_after": 73
-        },
-        "xml_protocol_compliance": {
-          "prompt_used_xml": true,
-          "response_used_xml": true,
-          "all_sections_present": true,
-          "test_evidence_provided": true,
-          "false_complete_avoided": true
-        }
-      },
-      "workflow_metadata": {
-        "workflow_name": "test-workflow",
-        "workflow_id": "e7adbcb0-9c01-4137-8e91-1e9c804a9280",
-        "duration_seconds": 0.01,
-        "started_at": "2026-02-12T06:58:26.788688",
-        "completed_at": "2026-02-12T06:58:26.802946"
-      }
-    },
-    {
-      "pattern_id": "workflow_20260212_0cde38b7",
-      "bug_type": "workflow_run",
-      "status": "resolved",
-      "root_cause": "Workflow: test-workflow - Test workflow for coordination",
-      "fix": "Completed via test-workflow workflow",
-      "resolved_by": "@empathy_framework",
-      "resolved_at": "2026-02-12",
-      "files_affected": [],
-      "source": "workflow_tracking",
-      "tier_progression": {
-        "methodology": "AI-ADDIE",
-        "recommended_tier": "CHEAP",
-        "starting_tier": "CAPABLE",
-        "successful_tier": "CAPABLE",
-        "total_attempts": 2,
-        "tier_history": [
-          {
-            "tier": "CHEAP",
-            "attempts": 1,
-            "success": {
-              "attempt": 1,
-              "quality_gates_passed": [
-                "execution",
-                "output"
-              ]
-            }
-          },
-          {
-            "tier": "CAPABLE",
-            "attempts": 1,
-            "success": {
-              "attempt": 1,
-              "quality_gates_passed": [
-                "execution",
-                "output"
-              ]
-            }
-          }
-        ],
-        "cost_breakdown": {
-          "total_cost": 0.0,
-          "cost_if_always_premium": 0.001,
-          "savings_percent": 80.0
-        },
-        "quality_metrics": {
-          "tests_passed": true,
-          "health_score_before": 73,
-          "health_score_after": 73
-        },
-        "xml_protocol_compliance": {
-          "prompt_used_xml": true,
-          "response_used_xml": true,
-          "all_sections_present": true,
-          "test_evidence_provided": true,
-          "false_complete_avoided": true
-        }
-      },
-      "workflow_metadata": {
-        "workflow_name": "test-workflow",
-        "workflow_id": "0cde38b7-3e7d-4b7b-a4d8-d03d76b5896e",
-        "duration_seconds": 0.01,
-        "started_at": "2026-02-12T06:58:26.945216",
-        "completed_at": "2026-02-12T06:58:26.959845"
-      }
-    },
-    {
-      "pattern_id": "workflow_20260212_8073368f",
-      "bug_type": "workflow_run",
-      "status": "resolved",
-      "root_cause": "Workflow: success-workflow - Always succeeds",
-      "fix": "Completed via success-workflow workflow",
-      "resolved_by": "@empathy_framework",
-      "resolved_at": "2026-02-12",
-      "files_affected": [],
-      "source": "workflow_tracking",
-      "tier_progression": {
-        "methodology": "AI-ADDIE",
-        "recommended_tier": "CHEAP",
-        "starting_tier": "CAPABLE",
-        "successful_tier": "CAPABLE",
-        "total_attempts": 2,
-        "tier_history": [
-          {
-            "tier": "CHEAP",
-            "attempts": 1,
-            "success": {
-              "attempt": 1,
-              "quality_gates_passed": [
-                "execution",
-                "output"
-              ]
-            }
-          },
-          {
-            "tier": "CAPABLE",
-            "attempts": 1,
-            "success": {
-              "attempt": 1,
-              "quality_gates_passed": [
-                "execution",
-                "output"
-              ]
-            }
-          }
-        ],
-        "cost_breakdown": {
-          "total_cost": 0.001,
-          "cost_if_always_premium": 0.007,
-          "savings_percent": 80.0
-        },
-        "quality_metrics": {
-          "tests_passed": true,
-          "health_score_before": 73,
-          "health_score_after": 73
-        },
-        "xml_protocol_compliance": {
-          "prompt_used_xml": true,
-          "response_used_xml": true,
-          "all_sections_present": true,
-          "test_evidence_provided": true,
-          "false_complete_avoided": true
-        }
-      },
-      "workflow_metadata": {
-        "workflow_name": "success-workflow",
-        "workflow_id": "8073368f-e54e-4464-a569-e7240c569eae",
-        "duration_seconds": 0.02,
-        "started_at": "2026-02-12T06:58:35.703035",
-        "completed_at": "2026-02-12T06:58:35.718815"
-      }
-    },
-    {
-      "pattern_id": "workflow_20260212_d25f6360",
-      "bug_type": "workflow_run",
-      "status": "resolved",
-      "root_cause": "Workflow: success-workflow - Always succeeds",
-      "fix": "Completed via success-workflow workflow",
-      "resolved_by": "@empathy_framework",
-      "resolved_at": "2026-02-12",
-      "files_affected": [],
-      "source": "workflow_tracking",
-      "tier_progression": {
-        "methodology": "AI-ADDIE",
-        "recommended_tier": "CHEAP",
-        "starting_tier": "CAPABLE",
-        "successful_tier": "CAPABLE",
-        "total_attempts": 2,
-        "tier_history": [
-          {
-            "tier": "CHEAP",
-            "attempts": 1,
-            "success": {
-              "attempt": 1,
-              "quality_gates_passed": [
-                "execution",
-                "output"
-              ]
-            }
-          },
-          {
-            "tier": "CAPABLE",
-            "attempts": 1,
-            "success": {
-              "attempt": 1,
-              "quality_gates_passed": [
-                "execution",
-                "output"
-              ]
-            }
-          }
-        ],
-        "cost_breakdown": {
-          "total_cost": 0.001,
-          "cost_if_always_premium": 0.007,
-          "savings_percent": 80.0
-        },
-        "quality_metrics": {
-          "tests_passed": true,
-          "health_score_before": 73,
-          "health_score_after": 73
-        },
-        "xml_protocol_compliance": {
-          "prompt_used_xml": true,
-          "response_used_xml": true,
-          "all_sections_present": true,
-          "test_evidence_provided": true,
-          "false_complete_avoided": true
-        }
-      },
-      "workflow_metadata": {
-        "workflow_name": "success-workflow",
-        "workflow_id": "d25f6360-6678-41b5-9786-068f532dd4c8",
-        "duration_seconds": 0.01,
-        "started_at": "2026-02-12T06:58:35.732402",
-        "completed_at": "2026-02-12T06:58:35.744952"
-      }
-    },
-    {
-      "pattern_id": "workflow_20260212_c720a5b8",
-      "bug_type": "workflow_run",
-      "status": "resolved",
-      "root_cause": "Workflow: success-workflow - Always succeeds",
-      "fix": "Completed via success-workflow workflow",
-      "resolved_by": "@empathy_framework",
-      "resolved_at": "2026-02-12",
-      "files_affected": [],
-      "source": "workflow_tracking",
-      "tier_progression": {
-        "methodology": "AI-ADDIE",
-        "recommended_tier": "CHEAP",
-        "starting_tier": "CAPABLE",
-        "successful_tier": "CAPABLE",
-        "total_attempts": 2,
-        "tier_history": [
-          {
-            "tier": "CHEAP",
-            "attempts": 1,
-            "success": {
-              "attempt": 1,
-              "quality_gates_passed": [
-                "execution",
-                "output"
-              ]
-            }
-          },
-          {
-            "tier": "CAPABLE",
-            "attempts": 1,
-            "success": {
-              "attempt": 1,
-              "quality_gates_passed": [
-                "execution",
-                "output"
-              ]
-            }
-          }
-        ],
-        "cost_breakdown": {
-          "total_cost": 0.001,
-          "cost_if_always_premium": 0.007,
-          "savings_percent": 80.0
-        },
-        "quality_metrics": {
-          "tests_passed": true,
-          "health_score_before": 73,
-          "health_score_after": 73
-        },
-        "xml_protocol_compliance": {
-          "prompt_used_xml": true,
-          "response_used_xml": true,
-          "all_sections_present": true,
-          "test_evidence_provided": true,
-          "false_complete_avoided": true
-        }
-      },
-      "workflow_metadata": {
-        "workflow_name": "success-workflow",
-        "workflow_id": "c720a5b8-0258-44f1-a13a-3d8ff2d22592",
-        "duration_seconds": 0.01,
-        "started_at": "2026-02-12T06:58:35.758293",
-        "completed_at": "2026-02-12T06:58:35.771009"
-      }
-    },
-    {
-      "pattern_id": "workflow_20260212_c3ed0ffb",
-      "bug_type": "workflow_run",
-      "status": "failed",
-      "root_cause": "Workflow: failing-workflow - Always fails",
-      "fix": "Completed via failing-workflow workflow",
-      "resolved_by": "@empathy_framework",
-      "resolved_at": "2026-02-12",
-      "files_affected": [],
-      "source": "workflow_tracking",
-      "tier_progression": {
-        "methodology": "AI-ADDIE",
-        "recommended_tier": "CHEAP",
-        "starting_tier": "CHEAP",
-        "successful_tier": "CHEAP",
-        "total_attempts": 0,
-        "tier_history": [],
-        "cost_breakdown": {
-          "total_cost": 0,
-          "cost_if_always_premium": 0,
-          "savings_percent": 0
-        },
-        "quality_metrics": {
-          "tests_passed": false,
-          "health_score_before": 73,
-          "health_score_after": 73
-        },
-        "xml_protocol_compliance": {
-          "prompt_used_xml": true,
-          "response_used_xml": true,
-          "all_sections_present": true,
-          "test_evidence_provided": true,
-          "false_complete_avoided": false
-        }
-      },
-      "workflow_metadata": {
-        "workflow_name": "failing-workflow",
-        "workflow_id": "c3ed0ffb-8013-4e22-9759-5cdffde61916",
-        "duration_seconds": 0.01,
-        "started_at": "2026-02-12T06:58:35.857252",
-        "completed_at": "2026-02-12T06:58:35.871476"
-      }
-    },
-    {
-      "pattern_id": "workflow_20260212_55b450a6",
-      "bug_type": "workflow_run",
-      "status": "resolved",
-      "root_cause": "Workflow: success-workflow - Always succeeds",
-      "fix": "Completed via success-workflow workflow",
-      "resolved_by": "@empathy_framework",
-      "resolved_at": "2026-02-12",
-      "files_affected": [],
-      "source": "workflow_tracking",
-      "tier_progression": {
-        "methodology": "AI-ADDIE",
-        "recommended_tier": "CHEAP",
-        "starting_tier": "CAPABLE",
-        "successful_tier": "CAPABLE",
-        "total_attempts": 2,
-        "tier_history": [
-          {
-            "tier": "CHEAP",
-            "attempts": 1,
-            "success": {
-              "attempt": 1,
-              "quality_gates_passed": [
-                "execution",
-                "output"
-              ]
-            }
-          },
-          {
-            "tier": "CAPABLE",
-            "attempts": 1,
-            "success": {
-              "attempt": 1,
-              "quality_gates_passed": [
-                "execution",
-                "output"
-              ]
-            }
-          }
-        ],
-        "cost_breakdown": {
-          "total_cost": 0.001,
-          "cost_if_always_premium": 0.007,
-          "savings_percent": 80.0
-        },
-        "quality_metrics": {
-          "tests_passed": true,
-          "health_score_before": 73,
-          "health_score_after": 73
-        },
-        "xml_protocol_compliance": {
-          "prompt_used_xml": true,
-          "response_used_xml": true,
-          "all_sections_present": true,
-          "test_evidence_provided": true,
-          "false_complete_avoided": true
-        }
-      },
-      "workflow_metadata": {
-        "workflow_name": "success-workflow",
-        "workflow_id": "55b450a6-689c-468e-9ae0-9ee950837294",
-        "duration_seconds": 0.01,
-        "started_at": "2026-02-12T06:58:35.885849",
-        "completed_at": "2026-02-12T06:58:35.898829"
-      }
-    },
-    {
-      "pattern_id": "workflow_20260212_edbcb2e5",
-      "bug_type": "workflow_run",
-      "status": "resolved",
-      "root_cause": "Workflow: success-workflow - Always succeeds",
-      "fix": "Completed via success-workflow workflow",
-      "resolved_by": "@empathy_framework",
-      "resolved_at": "2026-02-12",
-      "files_affected": [],
-      "source": "workflow_tracking",
-      "tier_progression": {
-        "methodology": "AI-ADDIE",
-        "recommended_tier": "CHEAP",
-        "starting_tier": "CAPABLE",
-        "successful_tier": "CAPABLE",
-        "total_attempts": 2,
-        "tier_history": [
-          {
-            "tier": "CHEAP",
-            "attempts": 1,
-            "success": {
-              "attempt": 1,
-              "quality_gates_passed": [
-                "execution",
-                "output"
-              ]
-            }
-          },
-          {
-            "tier": "CAPABLE",
-            "attempts": 1,
-            "success": {
-              "attempt": 1,
-              "quality_gates_passed": [
-                "execution",
-                "output"
-              ]
-            }
-          }
-        ],
-        "cost_breakdown": {
-          "total_cost": 0.001,
-          "cost_if_always_premium": 0.007,
-          "savings_percent": 80.0
-        },
-        "quality_metrics": {
-          "tests_passed": true,
-          "health_score_before": 73,
-          "health_score_after": 73
-        },
-        "xml_protocol_compliance": {
-          "prompt_used_xml": true,
-          "response_used_xml": true,
-          "all_sections_present": true,
-          "test_evidence_provided": true,
-          "false_complete_avoided": true
-        }
-      },
-      "workflow_metadata": {
-        "workflow_name": "success-workflow",
-        "workflow_id": "edbcb2e5-96ae-43ce-b3cb-6b67469cd80d",
-        "duration_seconds": 0.01,
-        "started_at": "2026-02-12T06:58:35.919618",
-        "completed_at": "2026-02-12T06:58:35.934304"
-      }
-    },
-    {
       "pattern_id": "workflow_20260212_107630f4",
       "bug_type": "workflow_run",
       "status": "failed",
@@ -6821,6 +5551,1124 @@
         "duration_seconds": 0.01,
         "started_at": "2026-02-12T07:19:04.367607",
         "completed_at": "2026-02-12T07:19:04.381962"
+      }
+    },
+    {
+      "pattern_id": "workflow_20260212_36955f41",
+      "bug_type": "workflow_run",
+      "status": "resolved",
+      "root_cause": "Workflow: success-workflow - Always succeeds",
+      "fix": "Completed via success-workflow workflow",
+      "resolved_by": "@empathy_framework",
+      "resolved_at": "2026-02-12",
+      "files_affected": [],
+      "source": "workflow_tracking",
+      "tier_progression": {
+        "methodology": "AI-ADDIE",
+        "recommended_tier": "CHEAP",
+        "starting_tier": "CAPABLE",
+        "successful_tier": "CAPABLE",
+        "total_attempts": 2,
+        "tier_history": [
+          {
+            "tier": "CHEAP",
+            "attempts": 1,
+            "success": {
+              "attempt": 1,
+              "quality_gates_passed": [
+                "execution",
+                "output"
+              ]
+            }
+          },
+          {
+            "tier": "CAPABLE",
+            "attempts": 1,
+            "success": {
+              "attempt": 1,
+              "quality_gates_passed": [
+                "execution",
+                "output"
+              ]
+            }
+          }
+        ],
+        "cost_breakdown": {
+          "total_cost": 0.001,
+          "cost_if_always_premium": 0.007,
+          "savings_percent": 80.0
+        },
+        "quality_metrics": {
+          "tests_passed": true,
+          "health_score_before": 73,
+          "health_score_after": 73
+        },
+        "xml_protocol_compliance": {
+          "prompt_used_xml": true,
+          "response_used_xml": true,
+          "all_sections_present": true,
+          "test_evidence_provided": true,
+          "false_complete_avoided": true
+        }
+      },
+      "workflow_metadata": {
+        "workflow_name": "success-workflow",
+        "workflow_id": "36955f41-0c22-4df1-94b4-464661947733",
+        "duration_seconds": 0.06,
+        "started_at": "2026-02-12T21:55:35.087544",
+        "completed_at": "2026-02-12T21:55:35.150118"
+      }
+    },
+    {
+      "pattern_id": "workflow_20260212_83ba1432",
+      "bug_type": "workflow_run",
+      "status": "resolved",
+      "root_cause": "Workflow: success-workflow - Always succeeds",
+      "fix": "Completed via success-workflow workflow",
+      "resolved_by": "@empathy_framework",
+      "resolved_at": "2026-02-12",
+      "files_affected": [],
+      "source": "workflow_tracking",
+      "tier_progression": {
+        "methodology": "AI-ADDIE",
+        "recommended_tier": "CHEAP",
+        "starting_tier": "CAPABLE",
+        "successful_tier": "CAPABLE",
+        "total_attempts": 2,
+        "tier_history": [
+          {
+            "tier": "CHEAP",
+            "attempts": 1,
+            "success": {
+              "attempt": 1,
+              "quality_gates_passed": [
+                "execution",
+                "output"
+              ]
+            }
+          },
+          {
+            "tier": "CAPABLE",
+            "attempts": 1,
+            "success": {
+              "attempt": 1,
+              "quality_gates_passed": [
+                "execution",
+                "output"
+              ]
+            }
+          }
+        ],
+        "cost_breakdown": {
+          "total_cost": 0.001,
+          "cost_if_always_premium": 0.007,
+          "savings_percent": 80.0
+        },
+        "quality_metrics": {
+          "tests_passed": true,
+          "health_score_before": 73,
+          "health_score_after": 73
+        },
+        "xml_protocol_compliance": {
+          "prompt_used_xml": true,
+          "response_used_xml": true,
+          "all_sections_present": true,
+          "test_evidence_provided": true,
+          "false_complete_avoided": true
+        }
+      },
+      "workflow_metadata": {
+        "workflow_name": "success-workflow",
+        "workflow_id": "83ba1432-21d3-4278-b796-b7bc297a31ea",
+        "duration_seconds": 0.04,
+        "started_at": "2026-02-12T21:55:35.182561",
+        "completed_at": "2026-02-12T21:55:35.222477"
+      }
+    },
+    {
+      "pattern_id": "workflow_20260212_2bf4024b",
+      "bug_type": "workflow_run",
+      "status": "resolved",
+      "root_cause": "Workflow: success-workflow - Always succeeds",
+      "fix": "Completed via success-workflow workflow",
+      "resolved_by": "@empathy_framework",
+      "resolved_at": "2026-02-12",
+      "files_affected": [],
+      "source": "workflow_tracking",
+      "tier_progression": {
+        "methodology": "AI-ADDIE",
+        "recommended_tier": "CHEAP",
+        "starting_tier": "CAPABLE",
+        "successful_tier": "CAPABLE",
+        "total_attempts": 2,
+        "tier_history": [
+          {
+            "tier": "CHEAP",
+            "attempts": 1,
+            "success": {
+              "attempt": 1,
+              "quality_gates_passed": [
+                "execution",
+                "output"
+              ]
+            }
+          },
+          {
+            "tier": "CAPABLE",
+            "attempts": 1,
+            "success": {
+              "attempt": 1,
+              "quality_gates_passed": [
+                "execution",
+                "output"
+              ]
+            }
+          }
+        ],
+        "cost_breakdown": {
+          "total_cost": 0.001,
+          "cost_if_always_premium": 0.007,
+          "savings_percent": 80.0
+        },
+        "quality_metrics": {
+          "tests_passed": true,
+          "health_score_before": 73,
+          "health_score_after": 73
+        },
+        "xml_protocol_compliance": {
+          "prompt_used_xml": true,
+          "response_used_xml": true,
+          "all_sections_present": true,
+          "test_evidence_provided": true,
+          "false_complete_avoided": true
+        }
+      },
+      "workflow_metadata": {
+        "workflow_name": "success-workflow",
+        "workflow_id": "2bf4024b-959b-4562-9207-5dc25a79285f",
+        "duration_seconds": 0.04,
+        "started_at": "2026-02-12T21:55:35.253378",
+        "completed_at": "2026-02-12T21:55:35.293224"
+      }
+    },
+    {
+      "pattern_id": "workflow_20260212_f52cbfe5",
+      "bug_type": "workflow_run",
+      "status": "failed",
+      "root_cause": "Workflow: failing-workflow - Always fails",
+      "fix": "Completed via failing-workflow workflow",
+      "resolved_by": "@empathy_framework",
+      "resolved_at": "2026-02-12",
+      "files_affected": [],
+      "source": "workflow_tracking",
+      "tier_progression": {
+        "methodology": "AI-ADDIE",
+        "recommended_tier": "CHEAP",
+        "starting_tier": "CHEAP",
+        "successful_tier": "CHEAP",
+        "total_attempts": 0,
+        "tier_history": [],
+        "cost_breakdown": {
+          "total_cost": 0,
+          "cost_if_always_premium": 0,
+          "savings_percent": 0
+        },
+        "quality_metrics": {
+          "tests_passed": false,
+          "health_score_before": 73,
+          "health_score_after": 73
+        },
+        "xml_protocol_compliance": {
+          "prompt_used_xml": true,
+          "response_used_xml": true,
+          "all_sections_present": true,
+          "test_evidence_provided": true,
+          "false_complete_avoided": false
+        }
+      },
+      "workflow_metadata": {
+        "workflow_name": "failing-workflow",
+        "workflow_id": "f52cbfe5-a2b2-458f-9355-855c28686791",
+        "duration_seconds": 0.04,
+        "started_at": "2026-02-12T21:55:35.325108",
+        "completed_at": "2026-02-12T21:55:35.365511"
+      }
+    },
+    {
+      "pattern_id": "workflow_20260212_3907b3e6",
+      "bug_type": "workflow_run",
+      "status": "resolved",
+      "root_cause": "Workflow: success-workflow - Always succeeds",
+      "fix": "Completed via success-workflow workflow",
+      "resolved_by": "@empathy_framework",
+      "resolved_at": "2026-02-12",
+      "files_affected": [],
+      "source": "workflow_tracking",
+      "tier_progression": {
+        "methodology": "AI-ADDIE",
+        "recommended_tier": "CHEAP",
+        "starting_tier": "CAPABLE",
+        "successful_tier": "CAPABLE",
+        "total_attempts": 2,
+        "tier_history": [
+          {
+            "tier": "CHEAP",
+            "attempts": 1,
+            "success": {
+              "attempt": 1,
+              "quality_gates_passed": [
+                "execution",
+                "output"
+              ]
+            }
+          },
+          {
+            "tier": "CAPABLE",
+            "attempts": 1,
+            "success": {
+              "attempt": 1,
+              "quality_gates_passed": [
+                "execution",
+                "output"
+              ]
+            }
+          }
+        ],
+        "cost_breakdown": {
+          "total_cost": 0.001,
+          "cost_if_always_premium": 0.007,
+          "savings_percent": 80.0
+        },
+        "quality_metrics": {
+          "tests_passed": true,
+          "health_score_before": 73,
+          "health_score_after": 73
+        },
+        "xml_protocol_compliance": {
+          "prompt_used_xml": true,
+          "response_used_xml": true,
+          "all_sections_present": true,
+          "test_evidence_provided": true,
+          "false_complete_avoided": true
+        }
+      },
+      "workflow_metadata": {
+        "workflow_name": "success-workflow",
+        "workflow_id": "3907b3e6-ece4-47cd-a77d-d1d7414b4287",
+        "duration_seconds": 0.04,
+        "started_at": "2026-02-12T21:55:35.396583",
+        "completed_at": "2026-02-12T21:55:35.434230"
+      }
+    },
+    {
+      "pattern_id": "workflow_20260212_38fc1442",
+      "bug_type": "workflow_run",
+      "status": "resolved",
+      "root_cause": "Workflow: success-workflow - Always succeeds",
+      "fix": "Completed via success-workflow workflow",
+      "resolved_by": "@empathy_framework",
+      "resolved_at": "2026-02-12",
+      "files_affected": [],
+      "source": "workflow_tracking",
+      "tier_progression": {
+        "methodology": "AI-ADDIE",
+        "recommended_tier": "CHEAP",
+        "starting_tier": "CAPABLE",
+        "successful_tier": "CAPABLE",
+        "total_attempts": 2,
+        "tier_history": [
+          {
+            "tier": "CHEAP",
+            "attempts": 1,
+            "success": {
+              "attempt": 1,
+              "quality_gates_passed": [
+                "execution",
+                "output"
+              ]
+            }
+          },
+          {
+            "tier": "CAPABLE",
+            "attempts": 1,
+            "success": {
+              "attempt": 1,
+              "quality_gates_passed": [
+                "execution",
+                "output"
+              ]
+            }
+          }
+        ],
+        "cost_breakdown": {
+          "total_cost": 0.001,
+          "cost_if_always_premium": 0.007,
+          "savings_percent": 80.0
+        },
+        "quality_metrics": {
+          "tests_passed": true,
+          "health_score_before": 73,
+          "health_score_after": 73
+        },
+        "xml_protocol_compliance": {
+          "prompt_used_xml": true,
+          "response_used_xml": true,
+          "all_sections_present": true,
+          "test_evidence_provided": true,
+          "false_complete_avoided": true
+        }
+      },
+      "workflow_metadata": {
+        "workflow_name": "success-workflow",
+        "workflow_id": "38fc1442-6706-4a93-86aa-600be108ca58",
+        "duration_seconds": 0.04,
+        "started_at": "2026-02-12T21:55:35.468738",
+        "completed_at": "2026-02-12T21:55:35.510843"
+      }
+    },
+    {
+      "pattern_id": "workflow_20260212_0878333d",
+      "bug_type": "workflow_run",
+      "status": "failed",
+      "root_cause": "Workflow: failing-workflow - Always fails",
+      "fix": "Completed via failing-workflow workflow",
+      "resolved_by": "@empathy_framework",
+      "resolved_at": "2026-02-12",
+      "files_affected": [],
+      "source": "workflow_tracking",
+      "tier_progression": {
+        "methodology": "AI-ADDIE",
+        "recommended_tier": "CHEAP",
+        "starting_tier": "CHEAP",
+        "successful_tier": "CHEAP",
+        "total_attempts": 0,
+        "tier_history": [],
+        "cost_breakdown": {
+          "total_cost": 0,
+          "cost_if_always_premium": 0,
+          "savings_percent": 0
+        },
+        "quality_metrics": {
+          "tests_passed": false,
+          "health_score_before": 73,
+          "health_score_after": 73
+        },
+        "xml_protocol_compliance": {
+          "prompt_used_xml": true,
+          "response_used_xml": true,
+          "all_sections_present": true,
+          "test_evidence_provided": true,
+          "false_complete_avoided": false
+        }
+      },
+      "workflow_metadata": {
+        "workflow_name": "failing-workflow",
+        "workflow_id": "0878333d-cd25-41bd-b3d8-3cb07498e5ae",
+        "duration_seconds": 0.04,
+        "started_at": "2026-02-12T21:55:35.543997",
+        "completed_at": "2026-02-12T21:55:35.582394"
+      }
+    },
+    {
+      "pattern_id": "workflow_20260212_e4d48b65",
+      "bug_type": "security_issue",
+      "status": "resolved",
+      "root_cause": "Workflow: security-audit - Security audit stub",
+      "fix": "Completed via security-audit workflow",
+      "resolved_by": "@empathy_framework",
+      "resolved_at": "2026-02-12",
+      "files_affected": [],
+      "source": "workflow_tracking",
+      "tier_progression": {
+        "methodology": "AI-ADDIE",
+        "recommended_tier": "CHEAP",
+        "starting_tier": "CAPABLE",
+        "successful_tier": "CAPABLE",
+        "total_attempts": 1,
+        "tier_history": [
+          {
+            "tier": "CAPABLE",
+            "attempts": 1,
+            "success": {
+              "attempt": 1,
+              "quality_gates_passed": [
+                "execution",
+                "output"
+              ]
+            }
+          }
+        ],
+        "cost_breakdown": {
+          "total_cost": 0.001,
+          "cost_if_always_premium": 0.005,
+          "savings_percent": 80.0
+        },
+        "quality_metrics": {
+          "tests_passed": true,
+          "health_score_before": 73,
+          "health_score_after": 73
+        },
+        "xml_protocol_compliance": {
+          "prompt_used_xml": true,
+          "response_used_xml": true,
+          "all_sections_present": true,
+          "test_evidence_provided": true,
+          "false_complete_avoided": true
+        }
+      },
+      "workflow_metadata": {
+        "workflow_name": "security-audit",
+        "workflow_id": "e4d48b65-6d06-4c55-819f-ba22792dec8a",
+        "duration_seconds": 0.04,
+        "started_at": "2026-02-12T21:55:35.649044",
+        "completed_at": "2026-02-12T21:55:35.688226"
+      }
+    },
+    {
+      "pattern_id": "workflow_20260212_bd87e4a4",
+      "bug_type": "code_quality",
+      "status": "resolved",
+      "root_cause": "Workflow: code-review - Code review stub",
+      "fix": "Completed via code-review workflow",
+      "resolved_by": "@empathy_framework",
+      "resolved_at": "2026-02-12",
+      "files_affected": [],
+      "source": "workflow_tracking",
+      "tier_progression": {
+        "methodology": "AI-ADDIE",
+        "recommended_tier": "CHEAP",
+        "starting_tier": "CAPABLE",
+        "successful_tier": "CAPABLE",
+        "total_attempts": 1,
+        "tier_history": [
+          {
+            "tier": "CAPABLE",
+            "attempts": 1,
+            "success": {
+              "attempt": 1,
+              "quality_gates_passed": [
+                "execution",
+                "output"
+              ]
+            }
+          }
+        ],
+        "cost_breakdown": {
+          "total_cost": 0.001,
+          "cost_if_always_premium": 0.005,
+          "savings_percent": 80.0
+        },
+        "quality_metrics": {
+          "tests_passed": true,
+          "health_score_before": 73,
+          "health_score_after": 73
+        },
+        "xml_protocol_compliance": {
+          "prompt_used_xml": true,
+          "response_used_xml": true,
+          "all_sections_present": true,
+          "test_evidence_provided": true,
+          "false_complete_avoided": true
+        }
+      },
+      "workflow_metadata": {
+        "workflow_name": "code-review",
+        "workflow_id": "bd87e4a4-fd44-49a9-a1da-6b751e45152a",
+        "duration_seconds": 0.04,
+        "started_at": "2026-02-12T21:55:35.714704",
+        "completed_at": "2026-02-12T21:55:35.750162"
+      }
+    },
+    {
+      "pattern_id": "workflow_20260212_4db1646a",
+      "bug_type": "workflow_run",
+      "status": "resolved",
+      "root_cause": "Workflow: test-workflow - Test workflow",
+      "fix": "Completed via test-workflow workflow",
+      "resolved_by": "@empathy_framework",
+      "resolved_at": "2026-02-12",
+      "files_affected": [],
+      "source": "workflow_tracking",
+      "tier_progression": {
+        "methodology": "AI-ADDIE",
+        "recommended_tier": "CHEAP",
+        "starting_tier": "CAPABLE",
+        "successful_tier": "CAPABLE",
+        "total_attempts": 2,
+        "tier_history": [
+          {
+            "tier": "CAPABLE",
+            "attempts": 1,
+            "success": {
+              "attempt": 1,
+              "quality_gates_passed": [
+                "execution",
+                "output"
+              ]
+            }
+          },
+          {
+            "tier": "CHEAP",
+            "attempts": 1,
+            "success": {
+              "attempt": 1,
+              "quality_gates_passed": [
+                "execution",
+                "output"
+              ]
+            }
+          }
+        ],
+        "cost_breakdown": {
+          "total_cost": 0.001,
+          "cost_if_always_premium": 0.007,
+          "savings_percent": 80.0
+        },
+        "quality_metrics": {
+          "tests_passed": true,
+          "health_score_before": 73,
+          "health_score_after": 73
+        },
+        "xml_protocol_compliance": {
+          "prompt_used_xml": true,
+          "response_used_xml": true,
+          "all_sections_present": true,
+          "test_evidence_provided": true,
+          "false_complete_avoided": true
+        }
+      },
+      "workflow_metadata": {
+        "workflow_name": "test-workflow",
+        "workflow_id": "4db1646a-f9b4-4bf4-a82a-35f15eb9c701",
+        "duration_seconds": 0.06,
+        "started_at": "2026-02-12T22:05:37.671890",
+        "completed_at": "2026-02-12T22:05:37.730365"
+      }
+    },
+    {
+      "pattern_id": "workflow_20260212_4100a3b1",
+      "bug_type": "workflow_run",
+      "status": "resolved",
+      "root_cause": "Workflow: success-workflow - Always succeeds",
+      "fix": "Completed via success-workflow workflow",
+      "resolved_by": "@empathy_framework",
+      "resolved_at": "2026-02-12",
+      "files_affected": [],
+      "source": "workflow_tracking",
+      "tier_progression": {
+        "methodology": "AI-ADDIE",
+        "recommended_tier": "CHEAP",
+        "starting_tier": "CAPABLE",
+        "successful_tier": "CAPABLE",
+        "total_attempts": 2,
+        "tier_history": [
+          {
+            "tier": "CHEAP",
+            "attempts": 1,
+            "success": {
+              "attempt": 1,
+              "quality_gates_passed": [
+                "execution",
+                "output"
+              ]
+            }
+          },
+          {
+            "tier": "CAPABLE",
+            "attempts": 1,
+            "success": {
+              "attempt": 1,
+              "quality_gates_passed": [
+                "execution",
+                "output"
+              ]
+            }
+          }
+        ],
+        "cost_breakdown": {
+          "total_cost": 0.001,
+          "cost_if_always_premium": 0.007,
+          "savings_percent": 80.0
+        },
+        "quality_metrics": {
+          "tests_passed": true,
+          "health_score_before": 73,
+          "health_score_after": 73
+        },
+        "xml_protocol_compliance": {
+          "prompt_used_xml": true,
+          "response_used_xml": true,
+          "all_sections_present": true,
+          "test_evidence_provided": true,
+          "false_complete_avoided": true
+        }
+      },
+      "workflow_metadata": {
+        "workflow_name": "success-workflow",
+        "workflow_id": "4100a3b1-c586-4e67-9b57-c2e2df56a2f6",
+        "duration_seconds": 0.05,
+        "started_at": "2026-02-12T22:07:53.137693",
+        "completed_at": "2026-02-12T22:07:53.183949"
+      }
+    },
+    {
+      "pattern_id": "workflow_20260212_8c29778d",
+      "bug_type": "workflow_run",
+      "status": "resolved",
+      "root_cause": "Workflow: success-workflow - Always succeeds",
+      "fix": "Completed via success-workflow workflow",
+      "resolved_by": "@empathy_framework",
+      "resolved_at": "2026-02-12",
+      "files_affected": [],
+      "source": "workflow_tracking",
+      "tier_progression": {
+        "methodology": "AI-ADDIE",
+        "recommended_tier": "CHEAP",
+        "starting_tier": "CAPABLE",
+        "successful_tier": "CAPABLE",
+        "total_attempts": 2,
+        "tier_history": [
+          {
+            "tier": "CHEAP",
+            "attempts": 1,
+            "success": {
+              "attempt": 1,
+              "quality_gates_passed": [
+                "execution",
+                "output"
+              ]
+            }
+          },
+          {
+            "tier": "CAPABLE",
+            "attempts": 1,
+            "success": {
+              "attempt": 1,
+              "quality_gates_passed": [
+                "execution",
+                "output"
+              ]
+            }
+          }
+        ],
+        "cost_breakdown": {
+          "total_cost": 0.001,
+          "cost_if_always_premium": 0.007,
+          "savings_percent": 80.0
+        },
+        "quality_metrics": {
+          "tests_passed": true,
+          "health_score_before": 73,
+          "health_score_after": 73
+        },
+        "xml_protocol_compliance": {
+          "prompt_used_xml": true,
+          "response_used_xml": true,
+          "all_sections_present": true,
+          "test_evidence_provided": true,
+          "false_complete_avoided": true
+        }
+      },
+      "workflow_metadata": {
+        "workflow_name": "success-workflow",
+        "workflow_id": "8c29778d-a009-491b-8315-293aa4e3b66c",
+        "duration_seconds": 0.04,
+        "started_at": "2026-02-12T22:07:53.218323",
+        "completed_at": "2026-02-12T22:07:53.258628"
+      }
+    },
+    {
+      "pattern_id": "workflow_20260212_2ee8b46e",
+      "bug_type": "workflow_run",
+      "status": "resolved",
+      "root_cause": "Workflow: success-workflow - Always succeeds",
+      "fix": "Completed via success-workflow workflow",
+      "resolved_by": "@empathy_framework",
+      "resolved_at": "2026-02-12",
+      "files_affected": [],
+      "source": "workflow_tracking",
+      "tier_progression": {
+        "methodology": "AI-ADDIE",
+        "recommended_tier": "CHEAP",
+        "starting_tier": "CAPABLE",
+        "successful_tier": "CAPABLE",
+        "total_attempts": 2,
+        "tier_history": [
+          {
+            "tier": "CHEAP",
+            "attempts": 1,
+            "success": {
+              "attempt": 1,
+              "quality_gates_passed": [
+                "execution",
+                "output"
+              ]
+            }
+          },
+          {
+            "tier": "CAPABLE",
+            "attempts": 1,
+            "success": {
+              "attempt": 1,
+              "quality_gates_passed": [
+                "execution",
+                "output"
+              ]
+            }
+          }
+        ],
+        "cost_breakdown": {
+          "total_cost": 0.001,
+          "cost_if_always_premium": 0.007,
+          "savings_percent": 80.0
+        },
+        "quality_metrics": {
+          "tests_passed": true,
+          "health_score_before": 73,
+          "health_score_after": 73
+        },
+        "xml_protocol_compliance": {
+          "prompt_used_xml": true,
+          "response_used_xml": true,
+          "all_sections_present": true,
+          "test_evidence_provided": true,
+          "false_complete_avoided": true
+        }
+      },
+      "workflow_metadata": {
+        "workflow_name": "success-workflow",
+        "workflow_id": "2ee8b46e-6a15-4593-97f3-6843d2077513",
+        "duration_seconds": 0.04,
+        "started_at": "2026-02-12T22:07:53.292757",
+        "completed_at": "2026-02-12T22:07:53.332125"
+      }
+    },
+    {
+      "pattern_id": "workflow_20260212_0b0c6d66",
+      "bug_type": "workflow_run",
+      "status": "failed",
+      "root_cause": "Workflow: failing-workflow - Always fails",
+      "fix": "Completed via failing-workflow workflow",
+      "resolved_by": "@empathy_framework",
+      "resolved_at": "2026-02-12",
+      "files_affected": [],
+      "source": "workflow_tracking",
+      "tier_progression": {
+        "methodology": "AI-ADDIE",
+        "recommended_tier": "CHEAP",
+        "starting_tier": "CHEAP",
+        "successful_tier": "CHEAP",
+        "total_attempts": 0,
+        "tier_history": [],
+        "cost_breakdown": {
+          "total_cost": 0,
+          "cost_if_always_premium": 0,
+          "savings_percent": 0
+        },
+        "quality_metrics": {
+          "tests_passed": false,
+          "health_score_before": 73,
+          "health_score_after": 73
+        },
+        "xml_protocol_compliance": {
+          "prompt_used_xml": true,
+          "response_used_xml": true,
+          "all_sections_present": true,
+          "test_evidence_provided": true,
+          "false_complete_avoided": false
+        }
+      },
+      "workflow_metadata": {
+        "workflow_name": "failing-workflow",
+        "workflow_id": "0b0c6d66-bd60-4099-96fa-118bbee54bf1",
+        "duration_seconds": 0.04,
+        "started_at": "2026-02-12T22:07:53.368894",
+        "completed_at": "2026-02-12T22:07:53.409104"
+      }
+    },
+    {
+      "pattern_id": "workflow_20260212_a88046cc",
+      "bug_type": "workflow_run",
+      "status": "resolved",
+      "root_cause": "Workflow: success-workflow - Always succeeds",
+      "fix": "Completed via success-workflow workflow",
+      "resolved_by": "@empathy_framework",
+      "resolved_at": "2026-02-12",
+      "files_affected": [],
+      "source": "workflow_tracking",
+      "tier_progression": {
+        "methodology": "AI-ADDIE",
+        "recommended_tier": "CHEAP",
+        "starting_tier": "CAPABLE",
+        "successful_tier": "CAPABLE",
+        "total_attempts": 2,
+        "tier_history": [
+          {
+            "tier": "CHEAP",
+            "attempts": 1,
+            "success": {
+              "attempt": 1,
+              "quality_gates_passed": [
+                "execution",
+                "output"
+              ]
+            }
+          },
+          {
+            "tier": "CAPABLE",
+            "attempts": 1,
+            "success": {
+              "attempt": 1,
+              "quality_gates_passed": [
+                "execution",
+                "output"
+              ]
+            }
+          }
+        ],
+        "cost_breakdown": {
+          "total_cost": 0.001,
+          "cost_if_always_premium": 0.007,
+          "savings_percent": 80.0
+        },
+        "quality_metrics": {
+          "tests_passed": true,
+          "health_score_before": 73,
+          "health_score_after": 73
+        },
+        "xml_protocol_compliance": {
+          "prompt_used_xml": true,
+          "response_used_xml": true,
+          "all_sections_present": true,
+          "test_evidence_provided": true,
+          "false_complete_avoided": true
+        }
+      },
+      "workflow_metadata": {
+        "workflow_name": "success-workflow",
+        "workflow_id": "a88046cc-37f1-4e29-873f-3a25e564ef88",
+        "duration_seconds": 0.04,
+        "started_at": "2026-02-12T22:07:53.442774",
+        "completed_at": "2026-02-12T22:07:53.483074"
+      }
+    },
+    {
+      "pattern_id": "workflow_20260212_0563a93f",
+      "bug_type": "workflow_run",
+      "status": "resolved",
+      "root_cause": "Workflow: success-workflow - Always succeeds",
+      "fix": "Completed via success-workflow workflow",
+      "resolved_by": "@empathy_framework",
+      "resolved_at": "2026-02-12",
+      "files_affected": [],
+      "source": "workflow_tracking",
+      "tier_progression": {
+        "methodology": "AI-ADDIE",
+        "recommended_tier": "CHEAP",
+        "starting_tier": "CAPABLE",
+        "successful_tier": "CAPABLE",
+        "total_attempts": 2,
+        "tier_history": [
+          {
+            "tier": "CHEAP",
+            "attempts": 1,
+            "success": {
+              "attempt": 1,
+              "quality_gates_passed": [
+                "execution",
+                "output"
+              ]
+            }
+          },
+          {
+            "tier": "CAPABLE",
+            "attempts": 1,
+            "success": {
+              "attempt": 1,
+              "quality_gates_passed": [
+                "execution",
+                "output"
+              ]
+            }
+          }
+        ],
+        "cost_breakdown": {
+          "total_cost": 0.001,
+          "cost_if_always_premium": 0.007,
+          "savings_percent": 80.0
+        },
+        "quality_metrics": {
+          "tests_passed": true,
+          "health_score_before": 73,
+          "health_score_after": 73
+        },
+        "xml_protocol_compliance": {
+          "prompt_used_xml": true,
+          "response_used_xml": true,
+          "all_sections_present": true,
+          "test_evidence_provided": true,
+          "false_complete_avoided": true
+        }
+      },
+      "workflow_metadata": {
+        "workflow_name": "success-workflow",
+        "workflow_id": "0563a93f-c4ab-43a2-bb9f-49e32bd7624a",
+        "duration_seconds": 0.04,
+        "started_at": "2026-02-12T22:07:53.522990",
+        "completed_at": "2026-02-12T22:07:53.563757"
+      }
+    },
+    {
+      "pattern_id": "workflow_20260212_67ecec47",
+      "bug_type": "workflow_run",
+      "status": "failed",
+      "root_cause": "Workflow: failing-workflow - Always fails",
+      "fix": "Completed via failing-workflow workflow",
+      "resolved_by": "@empathy_framework",
+      "resolved_at": "2026-02-12",
+      "files_affected": [],
+      "source": "workflow_tracking",
+      "tier_progression": {
+        "methodology": "AI-ADDIE",
+        "recommended_tier": "CHEAP",
+        "starting_tier": "CHEAP",
+        "successful_tier": "CHEAP",
+        "total_attempts": 0,
+        "tier_history": [],
+        "cost_breakdown": {
+          "total_cost": 0,
+          "cost_if_always_premium": 0,
+          "savings_percent": 0
+        },
+        "quality_metrics": {
+          "tests_passed": false,
+          "health_score_before": 73,
+          "health_score_after": 73
+        },
+        "xml_protocol_compliance": {
+          "prompt_used_xml": true,
+          "response_used_xml": true,
+          "all_sections_present": true,
+          "test_evidence_provided": true,
+          "false_complete_avoided": false
+        }
+      },
+      "workflow_metadata": {
+        "workflow_name": "failing-workflow",
+        "workflow_id": "67ecec47-d406-4a8f-9c58-1a16c512e3d5",
+        "duration_seconds": 0.04,
+        "started_at": "2026-02-12T22:07:53.597378",
+        "completed_at": "2026-02-12T22:07:53.638079"
+      }
+    },
+    {
+      "pattern_id": "workflow_20260212_606747dc",
+      "bug_type": "security_issue",
+      "status": "resolved",
+      "root_cause": "Workflow: security-audit - Security audit stub",
+      "fix": "Completed via security-audit workflow",
+      "resolved_by": "@empathy_framework",
+      "resolved_at": "2026-02-12",
+      "files_affected": [],
+      "source": "workflow_tracking",
+      "tier_progression": {
+        "methodology": "AI-ADDIE",
+        "recommended_tier": "CHEAP",
+        "starting_tier": "CAPABLE",
+        "successful_tier": "CAPABLE",
+        "total_attempts": 1,
+        "tier_history": [
+          {
+            "tier": "CAPABLE",
+            "attempts": 1,
+            "success": {
+              "attempt": 1,
+              "quality_gates_passed": [
+                "execution",
+                "output"
+              ]
+            }
+          }
+        ],
+        "cost_breakdown": {
+          "total_cost": 0.001,
+          "cost_if_always_premium": 0.005,
+          "savings_percent": 80.0
+        },
+        "quality_metrics": {
+          "tests_passed": true,
+          "health_score_before": 73,
+          "health_score_after": 73
+        },
+        "xml_protocol_compliance": {
+          "prompt_used_xml": true,
+          "response_used_xml": true,
+          "all_sections_present": true,
+          "test_evidence_provided": true,
+          "false_complete_avoided": true
+        }
+      },
+      "workflow_metadata": {
+        "workflow_name": "security-audit",
+        "workflow_id": "606747dc-63e7-495a-ad07-397f9dd149ca",
+        "duration_seconds": 0.04,
+        "started_at": "2026-02-12T22:07:53.737061",
+        "completed_at": "2026-02-12T22:07:53.780205"
+      }
+    },
+    {
+      "pattern_id": "workflow_20260212_df190ac8",
+      "bug_type": "code_quality",
+      "status": "resolved",
+      "root_cause": "Workflow: code-review - Code review stub",
+      "fix": "Completed via code-review workflow",
+      "resolved_by": "@empathy_framework",
+      "resolved_at": "2026-02-12",
+      "files_affected": [],
+      "source": "workflow_tracking",
+      "tier_progression": {
+        "methodology": "AI-ADDIE",
+        "recommended_tier": "CHEAP",
+        "starting_tier": "CAPABLE",
+        "successful_tier": "CAPABLE",
+        "total_attempts": 1,
+        "tier_history": [
+          {
+            "tier": "CAPABLE",
+            "attempts": 1,
+            "success": {
+              "attempt": 1,
+              "quality_gates_passed": [
+                "execution",
+                "output"
+              ]
+            }
+          }
+        ],
+        "cost_breakdown": {
+          "total_cost": 0.001,
+          "cost_if_always_premium": 0.005,
+          "savings_percent": 80.0
+        },
+        "quality_metrics": {
+          "tests_passed": true,
+          "health_score_before": 73,
+          "health_score_after": 73
+        },
+        "xml_protocol_compliance": {
+          "prompt_used_xml": true,
+          "response_used_xml": true,
+          "all_sections_present": true,
+          "test_evidence_provided": true,
+          "false_complete_avoided": true
+        }
+      },
+      "workflow_metadata": {
+        "workflow_name": "code-review",
+        "workflow_id": "df190ac8-79ce-438e-b1a7-2f308824fd95",
+        "duration_seconds": 0.04,
+        "started_at": "2026-02-12T22:07:53.806944",
+        "completed_at": "2026-02-12T22:07:53.844373"
       }
     }
   ]

@@ -336,6 +336,18 @@ class ProgressiveWorkflowResult:
 
         save_results_to_disk(self, storage_path)
 
+    def _calculate_all_premium_cost(self) -> float:
+        """Calculate hypothetical cost if all items used Premium tier.
+
+        Used by telemetry to calculate cost savings from progressive escalation.
+
+        Returns:
+            Estimated cost in USD if all items were processed at Premium tier
+        """
+        total_items = sum(len(r.generated_items) for r in self.tier_results)
+        # Assume Premium costs ~$0.05 per item (conservative estimate)
+        return total_items * 0.05
+
     @property
     def cost_savings(self) -> float:
         """Calculate cost savings vs running all items at Premium tier.
@@ -343,12 +355,7 @@ class ProgressiveWorkflowResult:
         Returns:
             Dollar amount saved by using progressive escalation
         """
-        # Estimate what it would cost if all items were Premium
-        total_items = sum(len(r.generated_items) for r in self.tier_results)
-
-        # Assume Premium costs ~$0.05 per item (conservative estimate)
-        all_premium_cost = total_items * 0.05
-
+        all_premium_cost = self._calculate_all_premium_cost()
         savings = all_premium_cost - self.total_cost
         return max(savings, 0.0)
 
@@ -359,8 +366,7 @@ class ProgressiveWorkflowResult:
         Returns:
             Savings percentage (0-100)
         """
-        total_items = sum(len(r.generated_items) for r in self.tier_results)
-        all_premium_cost = total_items * 0.05
+        all_premium_cost = self._calculate_all_premium_cost()
 
         if all_premium_cost == 0:
             return 0.0

@@ -92,7 +92,25 @@ class TestProgressiveWorkflowIntegration:
         """Test successful completion at cheap tier."""
         monkeypatch.setenv("ATTUNE_NON_INTERACTIVE", "1")
         config = EscalationConfig(enabled=True, auto_approve_under=10.00)
-        workflow = MockProgressiveWorkflow(config=config)
+
+        # Override mock to generate high quality for all items
+        class HighQualityWorkflow(MockProgressiveWorkflow):
+            def _execute_tier_impl(self, tier, items, context, **kwargs):
+                # Generate all items with quality >= 80
+                return [
+                    {
+                        "item": item,
+                        "quality_score": 85,
+                        "passed": True,
+                        "syntax_errors": [],
+                        "coverage": 85.0,
+                        "assertions": 6.0,
+                        "confidence": 0.85,
+                    }
+                    for item in items
+                ]
+
+        workflow = HighQualityWorkflow(config=config)
 
         # Only 2 items so quality will be high enough
         items = ["item1", "item2"]
@@ -125,10 +143,14 @@ class TestProgressiveWorkflowIntegration:
 
     def test_execute_progressive_user_cancels_initial(self, monkeypatch):
         """Test user cancelling initial approval."""
-        monkeypatch.setenv("CI", "")  # Remove CI env
-        monkeypatch.setenv("ATTUNE_NON_INTERACTIVE", "")
+        # Enable interactive mode
+        monkeypatch.delenv("CI", raising=False)
+        monkeypatch.delenv("ATTUNE_NON_INTERACTIVE", raising=False)
 
-        config = EscalationConfig(enabled=True)
+        # Force interactive prompt by setting auto-approve threshold to 0
+        monkeypatch.setenv("ATTUNE_AUTO_APPROVE_MAX", "0")
+
+        config = EscalationConfig(enabled=True, auto_approve_under=None)
         workflow = MockProgressiveWorkflow(config=config)
 
         # Mock input to return 'n' for cancellation
