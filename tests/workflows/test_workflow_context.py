@@ -13,8 +13,6 @@ from __future__ import annotations
 from typing import Any
 from unittest.mock import MagicMock, patch
 
-import pytest
-
 from attune.workflows.base import BaseWorkflow, ModelTier
 from attune.workflows.builder import WorkflowBuilder
 from attune.workflows.caching import CachedResponse
@@ -28,7 +26,6 @@ from attune.workflows.services import (
     TelemetryService,
     TierService,
 )
-
 
 # --- Test fixtures ---
 

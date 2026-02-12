@@ -9,7 +9,6 @@ Copyright 2025 Smart AI Memory, LLC
 Licensed under Apache 2.0
 """
 
-import asyncio
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -77,56 +76,51 @@ class TestToolRegistration:
 class TestEmpathyTools:
     """Test empathy level get/set operations."""
 
-    def test_empathy_get_level_default(self, server: EmpathyMCPServer):
+    @pytest.mark.asyncio
+    async def test_empathy_get_level_default(self, server: EmpathyMCPServer):
         """Test that default empathy level is 3 (Proactive)."""
-        result = asyncio.get_event_loop().run_until_complete(
-            server.call_tool("empathy_get_level", {})
-        )
+        result = await server.call_tool("empathy_get_level", {})
         assert result["success"] is True
         assert result["level"] == 3
         assert result["name"] == "Proactive"
 
-    def test_empathy_set_level_valid(self, server: EmpathyMCPServer):
+    @pytest.mark.asyncio
+    async def test_empathy_set_level_valid(self, server: EmpathyMCPServer):
         """Test setting empathy level to valid values 1-5."""
         for level in range(1, 6):
-            result = asyncio.get_event_loop().run_until_complete(
-                server.call_tool("empathy_set_level", {"level": level})
-            )
+            result = await server.call_tool("empathy_set_level", {"level": level})
             assert result["success"] is True
             assert result["current_level"] == level
 
-    def test_empathy_set_level_invalid_high(self, server: EmpathyMCPServer):
+    @pytest.mark.asyncio
+    async def test_empathy_set_level_invalid_high(self, server: EmpathyMCPServer):
         """Test that empathy_set_level rejects level > 5."""
-        result = asyncio.get_event_loop().run_until_complete(
-            server.call_tool("empathy_set_level", {"level": 10})
-        )
+        result = await server.call_tool("empathy_set_level", {"level": 10})
         assert result["success"] is False
         assert "1 and 5" in result["error"]
 
-    def test_empathy_set_level_invalid_low(self, server: EmpathyMCPServer):
+    @pytest.mark.asyncio
+    async def test_empathy_set_level_invalid_low(self, server: EmpathyMCPServer):
         """Test that empathy_set_level rejects level < 1."""
-        result = asyncio.get_event_loop().run_until_complete(
-            server.call_tool("empathy_set_level", {"level": 0})
-        )
+        result = await server.call_tool("empathy_set_level", {"level": 0})
         assert result["success"] is False
 
-    def test_empathy_set_level_invalid_string(self, server: EmpathyMCPServer):
+    @pytest.mark.asyncio
+    async def test_empathy_set_level_invalid_string(self, server: EmpathyMCPServer):
         """Test that empathy_set_level rejects non-integer input."""
-        result = asyncio.get_event_loop().run_until_complete(
-            server.call_tool("empathy_set_level", {"level": "high"})
-        )
+        result = await server.call_tool("empathy_set_level", {"level": "high"})
         assert result["success"] is False
 
-    def test_empathy_set_returns_previous_level(self, server: EmpathyMCPServer):
+    @pytest.mark.asyncio
+    async def test_empathy_set_returns_previous_level(self, server: EmpathyMCPServer):
         """Test that empathy_set_level returns the previous level."""
         # Default is 3
-        result = asyncio.get_event_loop().run_until_complete(
-            server.call_tool("empathy_set_level", {"level": 5})
-        )
+        result = await server.call_tool("empathy_set_level", {"level": 5})
         assert result["previous_level"] == 3
         assert result["current_level"] == 5
 
-    def test_empathy_level_names(self, server: EmpathyMCPServer):
+    @pytest.mark.asyncio
+    async def test_empathy_level_names(self, server: EmpathyMCPServer):
         """Test that all empathy levels have correct names."""
         expected_names = {
             1: "Reactive",
@@ -136,132 +130,113 @@ class TestEmpathyTools:
             5: "Systems",
         }
         for level, name in expected_names.items():
-            asyncio.get_event_loop().run_until_complete(
-                server.call_tool("empathy_set_level", {"level": level})
-            )
-            result = asyncio.get_event_loop().run_until_complete(
-                server.call_tool("empathy_get_level", {})
-            )
+            await server.call_tool("empathy_set_level", {"level": level})
+            result = await server.call_tool("empathy_get_level", {})
             assert result["name"] == name
 
 
 class TestContextTools:
     """Test context get/set operations."""
 
-    def test_context_get_set_roundtrip(self, server: EmpathyMCPServer):
+    @pytest.mark.asyncio
+    async def test_context_get_set_roundtrip(self, server: EmpathyMCPServer):
         """Test that context_set and context_get round-trip values."""
-        asyncio.get_event_loop().run_until_complete(
-            server.call_tool("context_set", {"key": "project", "value": "attune-ai"})
-        )
-        result = asyncio.get_event_loop().run_until_complete(
-            server.call_tool("context_get", {"key": "project"})
-        )
+        await server.call_tool("context_set", {"key": "project", "value": "attune-ai"})
+        result = await server.call_tool("context_get", {"key": "project"})
         assert result["success"] is True
         assert result["value"] == "attune-ai"
         assert result["found"] is True
 
-    def test_context_get_missing_key(self, server: EmpathyMCPServer):
+    @pytest.mark.asyncio
+    async def test_context_get_missing_key(self, server: EmpathyMCPServer):
         """Test that context_get returns found=False for missing keys."""
-        result = asyncio.get_event_loop().run_until_complete(
-            server.call_tool("context_get", {"key": "nonexistent"})
-        )
+        result = await server.call_tool("context_get", {"key": "nonexistent"})
         assert result["success"] is True
         assert result["value"] is None
         assert result["found"] is False
 
-    def test_context_set_overwrites(self, server: EmpathyMCPServer):
+    @pytest.mark.asyncio
+    async def test_context_set_overwrites(self, server: EmpathyMCPServer):
         """Test that context_set overwrites existing values."""
-        asyncio.get_event_loop().run_until_complete(
-            server.call_tool("context_set", {"key": "mode", "value": "development"})
-        )
-        asyncio.get_event_loop().run_until_complete(
-            server.call_tool("context_set", {"key": "mode", "value": "production"})
-        )
-        result = asyncio.get_event_loop().run_until_complete(
-            server.call_tool("context_get", {"key": "mode"})
-        )
+        await server.call_tool("context_set", {"key": "mode", "value": "development"})
+        await server.call_tool("context_set", {"key": "mode", "value": "production"})
+        result = await server.call_tool("context_get", {"key": "mode"})
         assert result["value"] == "production"
 
-    def test_context_multiple_keys(self, server: EmpathyMCPServer):
+    @pytest.mark.asyncio
+    async def test_context_multiple_keys(self, server: EmpathyMCPServer):
         """Test storing and retrieving multiple context keys."""
         keys = {"a": "1", "b": "2", "c": "3"}
         for key, value in keys.items():
-            asyncio.get_event_loop().run_until_complete(
-                server.call_tool("context_set", {"key": key, "value": value})
-            )
+            await server.call_tool("context_set", {"key": key, "value": value})
         for key, expected in keys.items():
-            result = asyncio.get_event_loop().run_until_complete(
-                server.call_tool("context_get", {"key": key})
-            )
+            result = await server.call_tool("context_get", {"key": key})
             assert result["value"] == expected
 
 
 class TestMemoryToolsWithMock:
     """Test memory tools with mocked UnifiedMemory."""
 
-    def test_memory_store_basic(self, server: EmpathyMCPServer):
+    @pytest.mark.asyncio
+    async def test_memory_store_basic(self, server: EmpathyMCPServer):
         """Test basic memory_store operation."""
         mock_memory = MagicMock()
         mock_memory.persist_pattern.return_value = {"pattern_id": "test-123"}
         server._memory = mock_memory
 
-        result = asyncio.get_event_loop().run_until_complete(
-            server.call_tool("memory_store", {
-                "key": "test-key",
-                "value": "test-value",
-            })
-        )
+        result = await server.call_tool("memory_store", {
+            "key": "test-key",
+            "value": "test-value",
+        })
         assert result["success"] is True
         assert result["key"] == "test-key"
         assert result["classification"] == "PUBLIC"
         mock_memory.stash.assert_called_once()
 
-    def test_memory_store_with_classification(self, server: EmpathyMCPServer):
+    @pytest.mark.asyncio
+    async def test_memory_store_with_classification(self, server: EmpathyMCPServer):
         """Test memory_store with SENSITIVE classification."""
         mock_memory = MagicMock()
         mock_memory.persist_pattern.return_value = {"pattern_id": "sensitive-123"}
         server._memory = mock_memory
 
-        result = asyncio.get_event_loop().run_until_complete(
-            server.call_tool("memory_store", {
-                "key": "secret-key",
-                "value": "sensitive-data",
-                "classification": "SENSITIVE",
-                "pattern_type": "credential",
-            })
-        )
+        result = await server.call_tool("memory_store", {
+            "key": "secret-key",
+            "value": "sensitive-data",
+            "classification": "SENSITIVE",
+            "pattern_type": "credential",
+        })
         assert result["success"] is True
         assert result["classification"] == "SENSITIVE"
         assert "pattern_id" in result
 
-    def test_memory_retrieve_found(self, server: EmpathyMCPServer):
+    @pytest.mark.asyncio
+    async def test_memory_retrieve_found(self, server: EmpathyMCPServer):
         """Test memory_retrieve when key exists in short-term."""
         mock_memory = MagicMock()
         mock_memory.retrieve.return_value = {"value": "found-data", "classification": "PUBLIC"}
         server._memory = mock_memory
 
-        result = asyncio.get_event_loop().run_until_complete(
-            server.call_tool("memory_retrieve", {"key": "existing-key"})
-        )
+        result = await server.call_tool("memory_retrieve", {"key": "existing-key"})
         assert result["success"] is True
         assert result["data"] is not None
         assert result["source"] == "short_term"
 
-    def test_memory_retrieve_missing_key(self, server: EmpathyMCPServer):
+    @pytest.mark.asyncio
+    async def test_memory_retrieve_missing_key(self, server: EmpathyMCPServer):
         """Test memory_retrieve when key does not exist."""
         mock_memory = MagicMock()
         mock_memory.retrieve.return_value = None
         mock_memory.recall_pattern.return_value = None
         server._memory = mock_memory
 
-        result = asyncio.get_event_loop().run_until_complete(
-            server.call_tool("memory_retrieve", {"key": "missing-key"})
-        )
+        result = await server.call_tool("memory_retrieve", {"key": "missing-key"})
         assert result["success"] is True
         assert result["data"] is None
         assert "not found" in result.get("message", "").lower()
 
-    def test_memory_search_matches(self, server: EmpathyMCPServer):
+    @pytest.mark.asyncio
+    async def test_memory_search_matches(self, server: EmpathyMCPServer):
         """Test memory_search returns matching patterns."""
         mock_memory = MagicMock()
         mock_memory.search_patterns = MagicMock(return_value=[
@@ -270,32 +245,28 @@ class TestMemoryToolsWithMock:
         ])
         server._memory = mock_memory
 
-        result = asyncio.get_event_loop().run_until_complete(
-            server.call_tool("memory_search", {"query": "match"})
-        )
+        result = await server.call_tool("memory_search", {"query": "match"})
         assert result["success"] is True
         assert result["count"] == 2
 
-    def test_memory_forget_removes(self, server: EmpathyMCPServer):
+    @pytest.mark.asyncio
+    async def test_memory_forget_removes(self, server: EmpathyMCPServer):
         """Test memory_forget removes data."""
         mock_memory = MagicMock()
         mock_memory.delete_pattern = MagicMock()
         server._memory = mock_memory
 
-        result = asyncio.get_event_loop().run_until_complete(
-            server.call_tool("memory_forget", {"key": "old-key"})
-        )
+        result = await server.call_tool("memory_forget", {"key": "old-key"})
         assert result["success"] is True
         assert "old-key" == result["key"]
 
-    def test_memory_store_import_error(self, server: EmpathyMCPServer):
+    @pytest.mark.asyncio
+    async def test_memory_store_import_error(self, server: EmpathyMCPServer):
         """Test memory_store handles ImportError gracefully."""
         server._memory = None  # Force lazy init
 
         with patch.object(server, "_get_memory", side_effect=ImportError("No memory module")):
-            result = asyncio.get_event_loop().run_until_complete(
-                server.call_tool("memory_store", {"key": "k", "value": "v"})
-            )
+            result = await server.call_tool("memory_store", {"key": "k", "value": "v"})
         assert result["success"] is False
         assert "error" in result
 
@@ -303,11 +274,10 @@ class TestMemoryToolsWithMock:
 class TestUnknownTool:
     """Test handling of unknown tool names."""
 
-    def test_unknown_tool_returns_error(self, server: EmpathyMCPServer):
+    @pytest.mark.asyncio
+    async def test_unknown_tool_returns_error(self, server: EmpathyMCPServer):
         """Test that calling an unknown tool returns an error."""
-        result = asyncio.get_event_loop().run_until_complete(
-            server.call_tool("nonexistent_tool", {})
-        )
+        result = await server.call_tool("nonexistent_tool", {})
         assert result["success"] is False
         assert "Unknown tool" in result["error"]
 
