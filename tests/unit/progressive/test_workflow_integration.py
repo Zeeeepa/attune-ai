@@ -8,9 +8,10 @@ Tests the full escalation loop including:
 - User approval flow
 """
 
-import pytest
 from datetime import datetime
-from unittest.mock import Mock, patch, MagicMock
+from unittest.mock import patch
+
+import pytest
 
 from attune.workflows.progressive.core import (
     EscalationConfig,

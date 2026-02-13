@@ -7,7 +7,6 @@ Tests cover:
 - Prompt building
 """
 
-import pytest
 from datetime import datetime
 
 from attune.workflows.progressive.core import (

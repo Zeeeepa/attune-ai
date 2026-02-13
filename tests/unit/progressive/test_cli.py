@@ -11,17 +11,14 @@ Tests cover:
 
 import argparse
 import json
-import pytest
 from datetime import datetime, timedelta
-from io import StringIO
-from pathlib import Path
 from unittest.mock import patch
 
 from attune.workflows.progressive.cli import (
-    cmd_list_results,
-    cmd_show_report,
     cmd_analytics,
     cmd_cleanup,
+    cmd_list_results,
+    cmd_show_report,
     create_parser,
     main,
 )

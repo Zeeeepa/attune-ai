@@ -8,15 +8,13 @@ Tests cover:
 - Budget exceeded handling
 """
 
-import os
-import pytest
 from datetime import datetime
-from unittest.mock import Mock, patch, MagicMock
+from unittest.mock import patch
+
+import pytest
 
 from attune.workflows.progressive.core import (
     EscalationConfig,
-    FailureAnalysis,
-    ProgressiveWorkflowResult,
     Tier,
     TierResult,
 )
